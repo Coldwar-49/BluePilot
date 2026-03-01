@@ -4,15 +4,25 @@ import '../models/device.dart';
 import '../core/utils/logger.dart';
 
 class BluetoothScannerService {
+  /// flutter_blue_plus ne supporte pas Windows (pas de pilote BLE natif).
+  /// Sur Linux, bluez est requis. On vérifie avant tout appel API.
+  static bool get _bleSupported =>
+      Platform.isAndroid || Platform.isIOS || Platform.isMacOS || Platform.isLinux;
+
   // ── BLE ─────────────────────────────────────────────────────
 
   Stream<Device> scanBle({
     Duration timeout = const Duration(seconds: 15),
   }) async* {
+    if (!_bleSupported) {
+      Logger.info('BTScanner', 'BLE non supporté sur ${Platform.operatingSystem}');
+      return;
+    }
+
     try {
       final supported = await FlutterBluePlus.isSupported;
       if (!supported) {
-        Logger.warn('BTScanner', 'BLE not supported on this device');
+        Logger.info('BTScanner', 'BLE non disponible sur cet appareil');
         return;
       }
 
@@ -40,6 +50,7 @@ class BluetoothScannerService {
   }
 
   Future<void> stopBleScan() async {
+    if (!_bleSupported) return;
     try {
       await FlutterBluePlus.stopScan();
     } catch (e) {
@@ -49,11 +60,8 @@ class BluetoothScannerService {
 
   // ── Classic BT (Android only) ────────────────────────────────
 
-  /// Returns empty stream on non-Android platforms.
   Stream<Device> scanClassicBt() async* {
     if (!Platform.isAndroid) return;
-    // Classic BT discovery via flutter_bluetooth_serial would go here.
-    // Excluded from this build to avoid Windows compile issues.
-    Logger.info('BTScanner', 'Classic BT scan not enabled in this build');
+    Logger.info('BTScanner', 'Classic BT scan non activé dans ce build');
   }
 }
