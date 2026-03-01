@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:dartssh2/dartssh2.dart';
 import '../models/ssh_credentials.dart';
 import '../core/utils/logger.dart';
@@ -56,9 +57,11 @@ class SshService {
     }
     try {
       final output = await _client!.run(command);
+      // Use utf8.decode with allowMalformed to handle non-UTF-8 output
+      // (e.g. Windows servers returning CP1252 encoded text)
       return SshCommandResult(
         exitCode: 0,
-        stdout: String.fromCharCodes(output),
+        stdout: utf8.decode(output, allowMalformed: true),
         stderr: '',
       );
     } catch (e) {
