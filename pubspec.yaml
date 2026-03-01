@@ -1,0 +1,58 @@
+name: blue_pilot
+description: Discover and control nearby WiFi and Bluetooth devices.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Navigation
+  go_router: ^14.6.3
+
+  # State management (Riverpod 2.x - compatible with this Flutter SDK)
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.3.5
+
+  # Bluetooth BLE
+  flutter_blue_plus: ^1.35.5
+
+  # LAN/WiFi scanning
+  network_tools: ^6.0.5
+  network_info_plus: ^6.1.3
+
+  # Wake-on-LAN
+  wake_on_lan: ^4.1.1+3
+
+  # SSH
+  dartssh2: ^2.13.0
+
+  # Permissions
+  permission_handler: ^11.3.1
+
+  # Persistence
+  shared_preferences: ^2.3.5
+
+  # Code generation support (annotations)
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+
+  # UI
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+  # Code generation
+  build_runner: ^2.4.13
+  riverpod_generator: ^2.4.4
+  freezed: ^2.5.7
+  json_serializable: ^6.8.0
+
+flutter:
+  uses-material-design: true
